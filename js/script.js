@@ -75,7 +75,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function autoResize() {
         this.style.height = 'auto';
         this.style.height = this.scrollHeight + 'px';
+        textarea-0.style.height = 'auto';
+        textarea-0.style.height = textarea-0.scrollHeight + 'px';	
     }
+
 
     function saveTextareas() {
         const textareas = Array.from(container.getElementsByTagName("textarea")).map(textarea => {
