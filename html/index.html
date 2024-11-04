@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="icon" type="image/x-icon" href="/img/icon.png">
+    <title>Document</title>
+
+</head>
+<body>
+    <div>
+        <nav id="menu">
+            <h3 id="header_text"><center>Ibrly Notes</center></h3>
+                <div id="menu_point">
+                    <div style="width: 95%; font-weight: 600;" class="one_pont">
+                            <img src="/img/none.png" width="17" height="17" id="menu_point_image" class="1Image">
+                            <a href="#" id="menu_point_text" class="1Adress">Untitled</a>
+                    </div>
+                </div>
+                <div id="menu_bottom" style="position: absolute; bottom: 10px; left: 10px; right: 0; margin: auto;">
+                    <div style="background-color: rgba(0, 0, 0, 0.5); border-radius: 5%; width: 95%" id="hint">
+                        <img src="/img/enter.png" width="30" height="30" style="margin-top: 5px; margin-left: 5px;">
+                        <p style="color: white; font-size: 15px; margin-top: -3px; margin-left: 3px;" >Enter для создания<br>новой строки</p>
+                        <img src="/img/delete.png" width="30" height="30" style="margin-top: 5px; margin-left: 5px;">
+                        <p style="color: white; font-size: 15px; margin-top: -3px; margin-left: 3px;" >Delete для удаления<br>созданой строки</p>
+                    </div>
+                    <div>
+                            <button width="20" height="20" style="background-color: rgba(0, 0, 0, 0.5); border-radius: 25%; "><img src="/img/plus.png" width="20" height="20"></button>
+                    </div>
+                </div>
+            </nav>
+        <main id="main">
+            <div id="container">
+                <h1> Untitled </h1>
+            </div>
+            <div id="contextMenu" class="context-menu">
+                <div class="context-menu__item" onclick="changeFont()">Heading 1</div>
+            </div>
+        </main>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
