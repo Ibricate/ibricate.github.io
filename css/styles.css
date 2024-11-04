@@ -26,6 +26,9 @@
     #menu {
         display: none;
     }
+    #main {
+        padding-left: 10px; 
+    }
 }
 
 body {
