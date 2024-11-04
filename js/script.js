@@ -26,7 +26,7 @@ setTimeout(Hide, 3000);
 
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById("container");
-    let nextId = 1;
+    let nextId = 0;
 
     function createTextarea(value = '', fontSize = '', fontWeight = '', height = 'auto') {
         const textarea = document.createElement("textarea");
@@ -74,9 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function autoResize() {
         this.style.height = 'auto';
-        this.style.height = this.scrollHeight + 'px';
-        textarea-0.style.height = 'auto';
-        textarea-0.style.height = textarea-0.scrollHeight + 'px';	
+        this.style.height = this.scrollHeight + 'px';	
     }
 
 
