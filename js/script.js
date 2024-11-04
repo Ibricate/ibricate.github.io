@@ -26,7 +26,7 @@ setTimeout(Hide, 3000);
 
 document.addEventListener("DOMContentLoaded", function() {
     const container = document.getElementById("container");
-    let nextId = 0;
+    let nextId = 1;
 
     function createTextarea(value = '', fontSize = '', fontWeight = '', height = 'auto') {
         const textarea = document.createElement("textarea");
