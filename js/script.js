@@ -1,3 +1,13 @@
+setTimeout(function(){
+	document.getElementById('hint').style.display = 'none';
+}, 5000);
+
+function Hide(){
+    document.getElementById('hint').classList.add('slow');
+}
+setTimeout(Hide, 3000);
+
+
 document.addEventListener("DOMContentLoaded", function() {
     let nextId = 0;
     let pageId = localStorage.getItem('pageId') ? parseInt(localStorage.getItem('pageId')) : 0;
@@ -12,7 +22,8 @@ document.addEventListener("DOMContentLoaded", function() {
                         value: textarea.value,
                         fontSize: textarea.style.fontSize,
                         fontWeight: textarea.style.fontWeight,
-                        height: textarea.style.height
+                        height: textarea.style.height,
+                        mainTextarea: textarea.dataset.mainTextarea || false
                     };
                 })
             };
@@ -20,9 +31,23 @@ document.addEventListener("DOMContentLoaded", function() {
         localStorage.setItem("containers", JSON.stringify(containers));
     }
 
+    function deleteContainer(containerId) {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.remove();
+        }
+
+        const menuItem = document.querySelector(`a[href="#${containerId}"]`).parentElement;
+        if (menuItem) {
+            menuItem.remove();
+        }
+
+        saveContainers();
+    }
+
     function createPage(fromLoad = false, id = `container-${pageId}`) {
         const containerWrapper = document.getElementById("main");
-        const sidebarMenu = document.getElementById("menu");
+        const sidebarMenu = document.getElementById("menu_point");
 
         const previousContainer = containerWrapper.querySelector(".container[style*='block']");
         if (previousContainer) {
@@ -38,10 +63,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
         const menuItem = document.createElement("li");
         const menuLink = document.createElement("a");
+        menuLink.style.color = "white";
+        menuLink.style.textDecoration = "none";
         menuLink.href = `#${id}`;
-        menuLink.style.color = 'white';
-        menuLink.style.textDecoration = 'none';
-        menuLink.style.fontSize = '20px'
         menuLink.textContent = `Контейнер ${parseInt(id.split('-')[1]) + 1}`;
         menuLink.dataset.containerId = id;
         menuLink.dataset.defaultName = menuLink.textContent;
@@ -55,13 +79,22 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("Контейнер не найден: ", this.dataset.containerId);
             }
         });
+
+        const deleteButton = document.createElement("span");
+        deleteButton.textContent = "X";
+        deleteButton.className = "delete-button";
+        deleteButton.addEventListener("click", function(event) {
+            event.stopPropagation();
+            const containerId = this.previousElementSibling.dataset.containerId;
+            deleteContainer(containerId);
+        });
+
         menuItem.appendChild(menuLink);
+        menuItem.appendChild(deleteButton);
         sidebarMenu.appendChild(menuItem);
 
-        // Создаем текстовое поле с определенным стилем, к которому нельзя применить delete и contextMenu
-        createTextarea('', '35px', '600', 'auto', id, menuLink, true);
-
         if (!fromLoad) {
+            createTextarea('', '35px', '600', 'auto', id, menuLink, true);
             pageId++;
             localStorage.setItem('pageId', pageId);
             saveContainers();
@@ -73,24 +106,29 @@ document.addEventListener("DOMContentLoaded", function() {
         saveContainers();
     });
 
-    function createTextarea(value = '', fontSize = '', fontWeight = '', height = 'auto', containerId, menuLink = null, nonDeletable = false) {
+    function createTextarea(value = '', fontSize = '', fontWeight = '', height = 'auto', containerId, menuLink = null, mainTextarea = false) {
         const textarea = document.createElement("textarea");
         textarea.value = value;
         textarea.rows = value.split('\n').length || 1;
         textarea.addEventListener("input", autoResize);
         textarea.addEventListener("input", saveContainers);
-        textarea.addEventListener("input", function() {
-            if (menuLink) {
-                menuLink.textContent = this.value || menuLink.dataset.defaultName;
-            }
-        });
+
+        if (mainTextarea) {
+            textarea.dataset.mainTextarea = true;
+            textarea.addEventListener("input", function() {
+                if (menuLink) {
+                    menuLink.textContent = this.value || menuLink.dataset.defaultName;
+                }
+            });
+        }
+
         textarea.id = `textarea-${nextId}`;
         textarea.placeholder = "Текст";
         textarea.style.fontSize = fontSize;
         textarea.style.fontWeight = fontWeight;
         textarea.style.height = height;
-        
-        if (!nonDeletable) {
+
+        if (!mainTextarea) {
             textarea.addEventListener("keydown", deleteTextareaOnDeleteKey);
             textarea.addEventListener("contextmenu", function(event) {
                 event.preventDefault();
@@ -146,9 +184,9 @@ document.addEventListener("DOMContentLoaded", function() {
         const containers = JSON.parse(localStorage.getItem("containers")) || [];
         containers.forEach(data => {
             createPage(true, data.id);
+            const menuLink = document.querySelector(`a[href="#${data.id}"]`);
             data.textareas.forEach(textareaData => {
-                const menuLink = document.querySelector(`a[href="#${data.id}"]`);
-                createTextarea(textareaData.value, textareaData.fontSize, textareaData.fontWeight, textareaData.height, data.id, menuLink, data.textareaData === '' ? true : false);
+                createTextarea(textareaData.value, textareaData.fontSize, textareaData.fontWeight, textareaData.height, data.id, textareaData.mainTextarea ? menuLink : null, textareaData.mainTextarea);
             });
         });
     }
@@ -169,4 +207,13 @@ document.addEventListener("DOMContentLoaded", function() {
             saveContainers();
         }
     };
+
+    // Открытие и закрытие меню для мобильных устройств
+    document.getElementById("openMenuBtn").addEventListener("click", function() {
+        document.getElementById("menu").classList.add("open");
+    });
+
+    document.getElementById("menu").addEventListener("click", function() {
+        document.getElementById("menu").classList.remove("open");
+    });
 });

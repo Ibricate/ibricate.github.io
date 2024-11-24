@@ -28,19 +28,47 @@
 li {
     list-style-type: none;
 }
-/* ------------------------ */
-@media (max-width: 700px){
-    #menu {
-        display: none;
-    }
-    #main {
-        padding-left: 10px; 
-    }
-}
+
+.delete-button { 
+    display: none; 
+    margin-left: 10px; 
+    cursor: pointer; 
+    color: red; 
+} 
+li:hover .delete-button { 
+    display: inline;
+ }
 
 body {
     background-color: rgb(17, 17, 18);
     font-family: "Montserrat", sans-serif;
+}
+
+header {
+    display: none; /* Hide desktop header */
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgb(53, 53, 56);
+    padding: 10px;
+}
+
+#header_text {
+    color: white;
+    margin: 0;
+}
+
+#header_text_mobile {
+    color: white;
+    margin: 0;
+    display: none;
+}
+
+.menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 #main {
@@ -56,27 +84,39 @@ body {
     top: 0;
     bottom: 0;
     left: 0;
+    transition: transform 0.3s ease;
+    transform: translateX(0);
 }
-
-#header_text {
-    color: white;
-    margin-top: 10px;
-}
-
-#menu_point_image {
-    margin-top: 5px;
-    margin-left: 5px;
-    margin-right: 10px;
-}
-
-
 
 #menu_point {
-    text-decoration: none;
+    padding-left: 0;
+}
+
+#menu_bottom {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    right: 0;
+    margin: auto;
+}
+
+#hint {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 5%;
     width: 95%;
-    margin-left: 7px;
-    margin-bottom: 10px;
-    height: 27px;
+    text-align: left;
+}
+
+#hint p {
+    color: white;
+    font-size: 15px;
+    margin: 5px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#hint img {
+    margin: 5px;
 }
 
 textarea {
@@ -88,4 +128,30 @@ textarea {
     font-size: 20px;
     color: white;
     overflow-y: hidden;
+}
+
+/* ------------------------ */
+@media (max-width: 700px) {
+    header {
+        display: flex; /* Show mobile header */
+    }
+    #main {
+        padding-left: 10px;
+    }
+    #menu {
+        height: auto;
+        width: 100%;
+        top: 0;
+        left: 0;
+        transform: translateY(-100%);
+    }
+    #menu.open {
+        transform: translateY(0);
+    }
+    #header_text {
+        display: none;
+    }
+    #header_text_mobile {
+        display: block;
+    }
 }
